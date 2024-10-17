@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пазл перевертыш</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            background-color: #986dd1;
+            margin: 0;
+        }
+        #puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 100px); /* 4 части по горизонтали */
+            grid-template-rows: repeat(4, 100px); /* 4 части по вертикали */
+            gap: 5px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-size: 400px 400px; /* Полная картинка 400x400 */
+            transform: rotate(0deg);
+            cursor: pointer;
+        }
+        #final-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+        #message {
+            text-align: center;
+            font-size: 24px;
+            color: green;
+            display: none;
+            margin-top: 10px;
+        }
+        #restart {
+            display: none;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="final-container">
+        <div id="puzzle-container"></div>
+        <div id="message">Конец!</div>
+        <button id="restart">Начать заново</button>
+    </div>
+
+    <script src="lab8.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: blue;
+            left: 100px;
+            top: 100px;
+            transition: all 0.6s ease;
+        }
+
+        .expanded {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+
+        .outlined {
+            background-color: transparent;
+            border: 5px solid black;
+        }
+    </style>
+    <title>Круг</title>
+</head>
+<body>
+
+<script>
+    let clickCount = 0;
+
+    function createCircle(x, y) {
+        clickCount = 0; // сбрасываем счетчик кликов для нового круга
+
+        const circle = document.createElement('div');
+        circle.classList.add('circle');
+        circle.style.left = `${x}px`;
+        circle.style.top = `${y}px`;
+
+        circle.addEventListener('click', (event) => {
+            event.stopPropagation(); // Остановить всплытие, чтобы не создавать новый круг
+            clickCount++;
+            handleCircleClick(circle, clickCount);
+        });
+
+        document.body.appendChild(circle);
+    }
+
+    function handleCircleClick(circle, count) {
+        switch (count) {
+            case 1:
+                circle.classList.add('expanded');
+                break;
+            case 2:
+                circle.classList.remove('expanded');
+                break;
+            case 3:
+                circle.classList.add('outlined');
+                break;
+            case 4:
+                // Удаление круга
+                circle.remove();
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Создаём первый круг при загрузке страницы с начальной позицией
+    window.onload = () => createCircle(100, 100);
+
+    // Добавляем новый круг при клике на веб-страницу
+    document.addEventListener('click', (event) => {
+        createCircle(event.clientX - 50, event.clientY - 50); // Центрируем круг на курсоре
+    });
+</script>
+
+</body>
+</html>

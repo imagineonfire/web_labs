@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: pink;
+
+
+        }
+        .slider-container {
+            width: 80%;
+            margin: 20px auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .arrow.left {
+            left: 10px;
+        }
+        
+        .arrow.right {
+            right: 10px;
+        }
+    </style>
+    <title>Слайдер</title>
+</head>
+<body>
+
+    <div class="slider-container">
+        <div class="slides">
+            <!-- Вставьте сюда свои изображения -->
+            <div class="slide"><img src="https://img.freepik.com/free-photo/vintage-sedan-car-driving-road_114579-5065.jpg?t=st=1728450707~exp=1728454307~hmac=a51f86285d5147fd9852e311f2997fe944aaf1eac700c98548dd398f279572dc&w=2000" alt="Image 1" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/low-angle-man-working-with-mask_52683-97008.jpg?t=st=1728450733~exp=1728454333~hmac=eed5dd512984c28ff14bd9c8532c79b9df064612f91da55df128b3bcd9a1743f&w=2000" alt="Image 2" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/black-sport-coupe-driving-with-back-red-lights_114579-4047.jpg?t=st=1728450778~exp=1728454378~hmac=518a0fb9d6f978039c3ef2f8002d3c1810c0bc700b666514de30d999e0605965&w=2000" alt="Image 3" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/moving-black-car-road_1268-21987.jpg?t=st=1728450801~exp=1728454401~hmac=8ae25067cc38a120f3b6a1a91d15e343a9cf0dfc631685c68331016ab47f54c1&w=2000" alt="Image 4" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/van-that-is-parked-by-fire_23-2151850167.jpg?t=st=1728450833~exp=1728454433~hmac=65a683a7a67d0c7903991452242f73a1d775ec9fa8c41b3750db7ec4dec4faea&w=2000" alt="Image 5" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/cartoon-smoke-with-car_23-2151234866.jpg?t=st=1728451100~exp=1728454700~hmac=a0fca2d8f552d00f16b8661916ceeb884d6421488ae3ad11e89816a522429c98&w=2000" alt="Image 6" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/cartoon-smoke-with-car_23-2151234865.jpg?t=st=1728450866~exp=1728454466~hmac=5a2e7f0c0e3e7c62ce879f02d95f8a810f9fd9999e9ec41756a4cead761839e7&w=2000" alt="Image 7" width="100%"></div>
+            <div class="slide"><img src="https://img.freepik.com/free-photo/friends-having-fun-traveling-by-car_23-2148771908.jpg?t=st=1728450889~exp=1728454489~hmac=3e075fa0429feee2daf38f2f5ec81fdfad41f3b9d37b5444e18670ea1162d0c1&w=2000" alt="Image 8" width="100%"></div>
+        </div>
+        
+        <div class="arrow left">&#9664;</div>
+        <div class="arrow right">&#9654;</div>
+
+        <div class="navigation">
+            <!-- Создаем 8 точек навигации -->
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlide(index) {
+            const slidesContainer = document.querySelector('.slides');
+            slidesContainer.style.transform = 'translateX(' + (-index * 100) + '%)';
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+        }
+
+        document.querySelector('.arrow.left').addEventListener('click', () => {
+            currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
+            updateSlide(currentSlide);
+        });
+        
+        document.querySelector('.arrow.right').addEventListener('click', () => {
+            currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+            updateSlide(currentSlide);
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlide(currentSlide);
+            });
+        });
+
+        setInterval(() => {
+            currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+            updateSlide(currentSlide);
+        }, 6000);
+
+        updateSlide(currentSlide);
+    </script>
+
+</body>
+</html>

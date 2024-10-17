@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровые Часы</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f06, pink);
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        #clock {
+            text-align: center;
+            font-size: 40px;
+        }
+
+        select {
+            margin-top: 20px;
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">
+        <div id="time"></div>
+        <div id="date"></div>
+        <select id="timezone">
+            <option value="0">UTC</option>
+            <option value="3">MSK</option>
+            <option value="6">Omsk</option>
+        </select>
+    </div>
+    <script src="lab9.js"></script>
+</body>
+</html>
