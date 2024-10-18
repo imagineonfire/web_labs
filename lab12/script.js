@@ -3,6 +3,7 @@ let buttons = Array.from(document.getElementsByTagName("button"));
 
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
+        function ctg(x) { return Math.cos(x) / Math.sin(x); }
         if (button.innerText === "C") {
             display.value = ""; // Очистка дисплея
         } else if (button.innerText === "=") {
@@ -26,7 +27,7 @@ buttons.forEach(button => {
         } else if (button.innerText === "tan") {
             display.value = Math.tan(eval(display.value)); // Тангенс
         } else if (button.innerText === "ctg") {
-            display.value = Math.ctg(eval(display.value)); // Котангенс
+            display.value = ctg(eval(display.value)); // Котангенс
         } else if (button.innerText === "n√") {
             const n = prompt("Введите степень корня (n):"); // Запрос степени корня
             if (n && !isNaN(n)) {

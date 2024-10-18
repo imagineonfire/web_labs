@@ -26,7 +26,14 @@ body {
     margin-bottom: 10px;
 }
 
-.function-buttons, .number-buttons {
+.function-buttons{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.number-buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
