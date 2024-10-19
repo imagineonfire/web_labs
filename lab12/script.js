@@ -1,6 +1,11 @@
 let display = document.getElementById("display");
 let buttons = Array.from(document.getElementsByTagName("button"));
 
+function addMultiplicationSign(expression) {
+    return expression.replace(/(\d)(\()/g, '$1*(')  // Умножение перед скобками
+                     .replace(/(\))(\d)/g, ')*$2'); // Умножение после скобок
+}
+
 buttons.forEach(button => {
     button.addEventListener("click", (e) => {
         function ctg(x) { return Math.cos(x) / Math.sin(x); }
@@ -8,7 +13,8 @@ buttons.forEach(button => {
             display.value = ""; // Очистка дисплея
         } else if (button.innerText === "=") {
             try {
-                display.value = eval(display.value); // Выполнение вычисления
+                let expression = addMultiplicationSign(display.value); // Добавление умножения
+                display.value = eval(expression); // Выполнение вычисления
             } catch {
                 display.value = "Error"; // Обработка ошибок
             }
