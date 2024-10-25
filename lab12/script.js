@@ -1,20 +1,47 @@
-let display = document.getElementById("display");
-let buttons = Array.from(document.getElementsByTagName("button"));
+//Скрипт требует доработки в плане отображения на экран функций: sin, cos, tan, ctg. 
+//Пока работает так: Нажимаем "sin", экран чистится, вводим значение для синуса, нажимаем "="
 
-function addMultiplicationSign(expression) {
+/*function addMultiplicationSign(expression) {
     return expression.replace(/(\d)(\()/g, '$1*(')  // Умножение перед скобками
                      .replace(/(\))(\d)/g, ')*$2'); // Умножение после скобок
 }
+*/
+let display = document.getElementById("display");
+let buttons = Array.from(document.getElementsByTagName("button"));
+let functionPending = null; // Флаг для отслеживания текущей функции
 
 buttons.forEach(button => {
-    button.addEventListener("click", (e) => {
+    button.addEventListener("click", () => {
         function ctg(x) { return Math.cos(x) / Math.sin(x); }
+
         if (button.innerText === "C") {
             display.value = ""; // Очистка дисплея
+            functionPending = null; // Сброс состояния функции
         } else if (button.innerText === "=") {
             try {
-                let expression = addMultiplicationSign(display.value); // Добавление умножения
-                display.value = eval(expression); // Выполнение вычисления
+                // Если есть ожидающая функция, применяем её к значению на дисплее
+                if (functionPending) {
+                    let value = eval(display.value); // Получаем текущее значение
+                    switch (functionPending) {
+                        case "sin":
+                            display.value = Math.sin(value);
+                            break;
+                        case "cos":
+                            display.value = Math.cos(value);
+                            break;
+                        case "tan":
+                            display.value = Math.tan(value);
+                            break;
+                        case "ctg":
+                            display.value = ctg(value);
+                            break;
+                        default:
+                            display.value = eval(display.value); // Выполнение других вычислений
+                    }
+                    functionPending = null; // Сбрасываем флаг функции
+                } else {
+                    display.value = eval(display.value); // Выполнение вычисления
+                }
             } catch {
                 display.value = "Error"; // Обработка ошибок
             }
@@ -26,14 +53,9 @@ buttons.forEach(button => {
             display.value += Math.PI; // Добавление π
         } else if (button.innerText === "𝞎") {
             display.value += Math.E; // Добавление e
-        } else if (button.innerText === "sin") {
-            display.value = Math.sin(eval(display.value)); // Синус
-        } else if (button.innerText === "cos") {
-            display.value = Math.cos(eval(display.value)); // Косинус
-        } else if (button.innerText === "tan") {
-            display.value = Math.tan(eval(display.value)); // Тангенс
-        } else if (button.innerText === "ctg") {
-            display.value = ctg(eval(display.value)); // Котангенс
+        } else if (["sin", "cos", "tan", "ctg"].includes(button.innerText)) {
+            functionPending = button.innerText; // Устанавливаем ожидаемую функцию
+            display.value = ""; // Очищаем дисплей для ввода значения
         } else if (button.innerText === "n√") {
             const n = prompt("Введите степень корня (n):"); // Запрос степени корня
             if (n && !isNaN(n)) {
