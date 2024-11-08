@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра Быки и Коровы</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; }
+        #game-container { max-width: 400px; text-align: center; }
+        #rules { margin-top: 20px; cursor: pointer; color: blue; text-decoration: underline; }
+        #rules-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border: 1px solid #000; }
+        #rules-modal p { margin-top: 0; }
+        #close-modal { cursor: pointer; color: red; }
+        #history { margin-top: 20px; width: 100%; border-collapse: collapse; }
+        #history th, #history td { border: 1px solid #000; padding: 8px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>Игра "Быки и Коровы"</h1>
+    <input type="text" id="guess-input" maxlength="4" placeholder="Введите число" />
+    <button onclick="makeGuess()">Угадать</button>
+    <div id="feedback"></div>
+    <p id="rules">Правила игры</p>
+    <div id="rules-modal">
+        <p>Цель игры — угадать четырехзначное число без повторяющихся цифр. "Бык" означает правильную цифру на правильном месте, а "Корова" — правильную цифру на неправильном месте. Число отгадано, когда есть 4 быка.</p>
+        <p id="close-modal">Закрыть</p>
+    </div>
+
+    <!-- Таблица истории -->
+    <table id="history">
+        <thead>
+            <tr>
+                <th>Ход</th>
+                <th>Число</th>
+                <th>Быки</th>
+                <th>Коровы</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    // Генерация случайного числа без повторяющихся цифр
+    let secretNumber;
+    let attemptCount = 0; // Счетчик попыток
+    function generateSecretNumber() {
+        let digits = [];
+        while (digits.length < 4) {
+            let digit = Math.floor(Math.random() * 10).toString();
+            if (!digits.includes(digit)) digits.push(digit);
+        }
+        secretNumber = digits.join('');
+        console.log("Секретное число:", secretNumber); // для отладки
+    }
+    generateSecretNumber();
+
+    // Обработка попытки игрока
+    function makeGuess() {
+        const guess = document.getElementById("guess-input").value;
+        if (guess.length !== 4 || new Set(guess).size !== 4 || isNaN(guess)) {
+            document.getElementById("feedback").textContent = "Введите четырехзначное число без повторяющихся цифр.";
+            return;
+        }
+
+        let bulls = 0;
+        let cows = 0;
+        attemptCount++;
+
+        // Подсчет быков и коров
+        for (let i = 0; i < 4; i++) {
+            if (guess[i] === secretNumber[i]) {
+                bulls++;
+            } else if (secretNumber.includes(guess[i])) {
+                cows++;
+            }
+        }
+
+        // Обновление истории попыток
+        updateHistory(attemptCount, guess, bulls, cows);
+
+        // Проверка, угадано ли число
+        if (bulls === 4) {
+            document.getElementById("feedback").textContent = `Поздравляем! Вы угадали число ${secretNumber} за ${attemptCount} ходов!`;
+        } else {
+            document.getElementById("feedback").textContent = `${bulls} быков, ${cows} коров`;
+        }
+
+        // Очистка поля ввода
+        document.getElementById("guess-input").value = "";
+    }
+
+    // Функция обновления истории попыток
+    function updateHistory(attempt, guess, bulls, cows) {
+        const historyTable = document.getElementById("history").getElementsByTagName('tbody')[0];
+        const newRow = historyTable.insertRow();
+
+        const cellAttempt = newRow.insertCell(0);
+        const cellGuess = newRow.insertCell(1);
+        const cellBulls = newRow.insertCell(2);
+        const cellCows = newRow.insertCell(3);
+
+        cellAttempt.textContent = attempt;
+        cellGuess.textContent = guess;
+        cellBulls.textContent = bulls;
+        cellCows.textContent = cows;
+    }
+
+    // Показать / скрыть правила игры
+    document.getElementById("rules").onclick = function() {
+        document.getElementById("rules-modal").style.display = "block";
+    };
+    document.getElementById("close-modal").onclick = function() {
+        document.getElementById("rules-modal").style.display = "none";
+    };
+</script>
+
+</body>
+</html>
